@@ -1,0 +1,26 @@
+{% extends "user/layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        {% include 'user/navbar.html' %}
+        {% for voucher in vouchers %}
+        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+            <div class="card mb-3">
+                <img src="{{ voucher.gambar }}" class="card-img-top" alt="Voucher Image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ voucher.judul }}</h5>
+                    <p class="card-text">{{ voucher.deskripsi }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Poin:</b> {{ voucher.poin }}</li>
+                </ul>
+                <div class="card-body">
+                    <a href="#" class="btn btn-primary">Redeem Voucher</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

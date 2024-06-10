@@ -1,0 +1,54 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row min-vh-100 no-gutters">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            {% include 'admin/navbar.html' %}
+        </div>
+        <!-- Main Content -->
+        <div class="col-md-9">
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="container mt-3">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 my-2 col-lg-8 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Add Voucher</h5>
+                                <form action="/admin/voucher" method="POST" enctype="multipart/form-data">
+                                    <div class="mb-3 mt-5">
+                                        <label for="judul" class="form-label">Voucher Title</label>
+                                        <input type="text" class="form-control" id="judul" name="judul" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="deskripsi" class="form-label">Description</label>
+                                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="poin" class="form-label">Points</label>
+                                        <input type="number" class="form-control" id="poin" name="poin" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="gambar" class="form-label">Upload Image</label>
+                                        <input type="file" class="form-control" id="gambar" name="gambar" accept=".png, .jpg, .jpeg, .gif" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add Voucher</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

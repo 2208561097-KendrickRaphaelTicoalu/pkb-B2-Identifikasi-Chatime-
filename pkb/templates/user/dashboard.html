@@ -1,0 +1,33 @@
+{% extends "user/layout.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row min-vh-100 no-gutters">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            {% include 'user/navbar.html' %}
+        </div>
+        <!-- Main Content -->
+        <div class="col-md-9">
+            {% with messages=get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}}">
+                <strong>{{message}}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="my-4">
+                <h1 class="mb-4">Welcome to 3T (Trash to Treasure)</h1>
+                <p class="lead">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

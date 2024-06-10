@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trash To Treasure</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback')}}">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/fontawesome-free/css/all.min.css')}}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/adminlte.min.css')}}">
+</head>
+<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <span class="brand-text font-weight-light">Trash to Treasure</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Admin
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/admin/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Login</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                User
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/user/signup" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Register</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/user/" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Login</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">About US</h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Profile Company</h5>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col">
+                    <p class="">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+      </div><!--/. container-fluid -->
+    </section>
+    <!-- /.content -->
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2024 <a href="/">Trash to Treasure</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='plugins/jquery/jquery.min.js')}}"></script>
+<!-- Bootstrap -->
+<script src="{{ url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+<!-- AdminLTE App -->
+<script src="{{ url_for('static', filename='dist/js/adminlte.js')}}"></script>
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="{{ url_for('static', filename='plugins/jquery-mousewheel/jquery.mousewheel.js')}}"></script>
+<script src="{{ url_for('static', filename='plugins/raphael/raphael.min.js')}}"></script>
+<script src="{{ url_for('static', filename='plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
+<script src="{{ url_for('static', filename='plugins/jquery-mapael/maps/usa_states.min.js')}}"></script>
+<!-- ChartJS -->
+<script src="{{ url_for('static', filename='plugins/chart.js/Chart.min.js')}}"></script>
+
+</body>
+</html>

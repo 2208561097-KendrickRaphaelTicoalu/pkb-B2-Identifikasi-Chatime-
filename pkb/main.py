@@ -1,8 +1,10 @@
-from flask import Flask, flash, render_template, request, redirect, session
+from flask import Flask, current_app, flash, render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_bcrypt import Bcrypt
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = '65b0b774279de460f1cc5c92'
@@ -14,9 +16,18 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 Session(app)
 
+UPLOAD_FOLDER = 'static/uploads/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# User Class
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nama = db.Column(db.String(255), nullable=False)  # Pastikan kolom 'nama' ada jika diperlukan
+    nama = db.Column(db.String(255), nullable=False)  
     no_telp = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
@@ -39,13 +50,13 @@ class Voucher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     judul = db.Column(db.String(255), nullable=False)
     deskripsi = db.Column(db.Text, nullable=False)
-    gambar = db.Column(db.String(255), nullable=False)
+    gambar = db.Column(db.String(255), nullable=False)  # Path to the uploaded file
     poin = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f'Voucher("{self.judul}", "{self.poin}")'
 
-# Ensure tables are created
+# Memastikan Tabel Ada
 with app.app_context():
     db.create_all()
     initial_admin = Admin.query.filter_by(username='admin').first()
@@ -55,7 +66,7 @@ with app.app_context():
         db.session.add(initial_admin)
         db.session.commit()
 
-# main index
+# Home
 @app.route('/')
 def index():
     return render_template('index.html', title="")
@@ -91,7 +102,7 @@ def adminDashboard():
     totalVouchers = Voucher.query.count()
     return render_template('admin/dashboard.html', title="Admin Dashboard", totalUsers=totalUsers, totalVouchers=totalVouchers)
 
-
+#admin profile
 @app.route('/admin/profile/', methods=["GET"])
 def adminProfile():
     if not session.get('admin_id'):
@@ -138,7 +149,7 @@ def adminGetAllUser():
         users = User.query.all()
         return render_template('admin/user.html', title='Approve User', users=users)
 
-# admin voucher 
+#admin voucher
 @app.route('/admin/voucher/', methods=["POST", "GET"])
 def adminAddVoucher():
     if not session.get('admin_id'):
@@ -147,11 +158,22 @@ def adminAddVoucher():
     if request.method == 'POST':
         judul = request.form.get('judul')
         deskripsi = request.form.get('deskripsi')
-        gambar = request.form.get('gambar')
         poin = request.form.get('poin')
+        file = request.files.get('gambar')
 
-        if not judul or not deskripsi or not gambar or not poin:
+        if not judul or not deskripsi or not file or not poin:
             flash('Please fill all fields', 'danger')
+            return redirect('/admin/voucher/')
+
+        if file.filename == '':
+            flash('No selected file', 'danger')
+            return redirect('/admin/voucher/')
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            flash('Invalid file type. Allowed types are png, jpg, jpeg, gif', 'danger')
             return redirect('/admin/voucher/')
 
         try:
@@ -160,7 +182,7 @@ def adminAddVoucher():
             flash('Points must be a number', 'danger')
             return redirect('/admin/voucher/')
 
-        voucher = Voucher(judul=judul, deskripsi=deskripsi, gambar=gambar, poin=poin)
+        voucher = Voucher(judul=judul, deskripsi=deskripsi, gambar=filename, poin=poin)
         db.session.add(voucher)
         db.session.commit()
         flash('Voucher added successfully', 'success')
@@ -192,7 +214,7 @@ def userLogin():
         user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
             session['user_id'] = user.id
-            session['username'] = user.nama  # Assuming 'nama' is the username field
+            session['username'] = user.nama 
             flash('Login Successfully', 'success')
             return redirect('/user/dashboard')
 
@@ -201,8 +223,8 @@ def userLogin():
 
     return render_template('user/index.html', title="User Login")
 
-
-@app.route('/user/signup', methods=['POST', 'GET'])
+#user register
+@app.route('/user/signup/', methods=['POST', 'GET'])
 def userSignup():
     if session.get('user_id'):
         return redirect('/user/dashboard')
@@ -226,12 +248,12 @@ def userSignup():
         new_user = User(nama=nama, no_telp=no_telp, email=email, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        flash('Account created successfully. Please wait for admin approval.', 'success')
+        flash('Account created successfully', 'success')
         return redirect('/user/')
 
     return render_template('user/signup.html', title="User Signup")
 
-# user dashboard menampilkan deskripsi singkat
+# user dashboard 
 @app.route('/user/dashboard/')
 def userDashboard():
     if not session.get('user_id'):
@@ -239,7 +261,7 @@ def userDashboard():
     user = User.query.get(session['user_id'])
     return render_template('user/dashboard.html', title="User Dashboard", user=user)
 
-# user profile untuk mengubah nama/email/password dan menampilkan poin
+# user profile 
 @app.route('/user/profile/', methods=["POST", "GET"])
 def userProfile():
     if not session.get('user_id'):
@@ -273,7 +295,7 @@ def userProfile():
 
     return render_template('user/profile.html', title="User Profile", user=user)
 
-# user voucher berisikan tampilan voucher yang telah dimasukkan admin
+# user voucher 
 @app.route('/user/voucher/')
 def userVoucher():
     if not session.get('user_id'):
@@ -286,7 +308,7 @@ def userVoucher():
 def userLogout():
     session.pop('user_id', None)
     session.pop('username', None)
-    return redirect('/user/')
+    return redirect('/')
 
 
 if __name__ == '__main__':

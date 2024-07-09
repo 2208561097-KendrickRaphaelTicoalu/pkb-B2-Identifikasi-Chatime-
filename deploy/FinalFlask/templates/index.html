@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trash To Treasure</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<div class="container" style="padding-top:30px;">
+    <div class="d-flex justify-content-center"><h1>3T: Trash To Treasure</h1></div>
+    <hr class="mt-2 mb-5">
+    <div class="text-center">
+        <button id="captureBtn" class="btn btn-primary">Capture</button>
+    </div>
+    <div id="message" class="text-center" style="padding-top:30px;"></div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#captureBtn').click(function() {
+            $.post('/capture', function(data) {
+                window.location.href = "/input_phone";
+            }).fail(function() {
+                $('#message').html('Capture failed');
+            });
+        });
+    });
+</script>
+</body>
+</html>
